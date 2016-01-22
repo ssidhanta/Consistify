@@ -172,10 +172,11 @@ public class Interface {
 	public void scheduleAndQueueTPCC(int index, String key, long l, String clId, long tInv)
 	{
 		Scheduler scheduler = new Scheduler();
-		Session session = null;  
+		//Session session = null;  
 		String cLevel= "ALL",condn = "price>20";
 		ClientQueryExampleThread clientQueryExampleThread = new ClientQueryExampleThread(clId, tInv, 1);
-		session = clientQueryExampleThread.callClient(cLevel, condn);//unblock for deploy
+		if(ClientQueryExampleThread.session==null || ClientQueryExampleThread.session.isClosed())
+			ClientQueryExampleThread.session = ClientQueryExampleThread.callClient(cLevel, condn);//unblock for deploy
 		Query q = null;
 		//UUID idOne = UUID.randomUUID();
 		String CLID = null; //String.valueOf(idOne) + String.valueOf(System.currentTimeMillis());
@@ -184,9 +185,9 @@ public class Interface {
 		//key = (String) ((HashMap<String,String>)DependencyChecker.serializeList.get(index)).keySet().toArray()[0];
 		
 		curr_deadline = curr_deadline - (System.currentTimeMillis()-tInv);
-		createRegistry(session);
+		createRegistry(ClientQueryExampleThread.session);
 		
-		writeToRegister(key,index,clId,l,latencyDep,curr_deadline,"OFF",session);//unblock for deploy
+		writeToRegister(key,index,clId,l,latencyDep,curr_deadline,"OFF",ClientQueryExampleThread.session);//unblock for deploy
 		System.out.println("***After write to register");//for thread "+Thread.currentThread().getName());
 		//CLID = readFromRegister(key, session);//unblock for deploy
 		//System.out.println("****rlist size:="+ rList.size());
@@ -196,12 +197,12 @@ public class Interface {
 		//CLID = scheduler.schedule(rList).split(":")[0];
 		//STATUS = scheduler.schedule(rList).split(":")[1];
 			
-		while(readFromRegister(key, session)!=null && readFromRegister(key, session).contains(":") && readFromRegister(key, session).split(":")[1].equalsIgnoreCase("OFF") && !clId.equalsIgnoreCase(readFromRegister(key, session).split(":")[0]))// || !STATUS.equalsIgnoreCase("OFF"))
+		while(readFromRegister(key, ClientQueryExampleThread.session)!=null && readFromRegister(key, ClientQueryExampleThread.session).contains(":") && readFromRegister(key, ClientQueryExampleThread.session).split(":")[1].equalsIgnoreCase("OFF") && !clId.equalsIgnoreCase(readFromRegister(key, ClientQueryExampleThread.session).split(":")[0]))// || !STATUS.equalsIgnoreCase("OFF"))
 		{
 			//System.out.println("***Client " + clId +"Waiting for the lock to the column "+key);// for thread "+Thread.currentThread().getName());
 			//System.out.println("***Waiting for the lock to the column "+key);// for thread "+Thread.currentThread().getName());
 		}
-		scheduler.requestLock(session,key,clId,index);//unblock for deploy
+		scheduler.requestLock(ClientQueryExampleThread.session,key,clId,index);//unblock for deploy
 		System.out.println("***After requesting the lock to the columnfor the query index"+ index);
 		
 	}
@@ -209,10 +210,11 @@ public class Interface {
 	public void clearscheduleAndQueueTPCC(int index, String key, long l, String clId, long tInv)
 	{
 		Scheduler scheduler = new Scheduler();
-		Session session = null;  
+		//Session session = null;  
 		String cLevel= "ALL",condn = "price>20";
 		ClientQueryExampleThread clientQueryExampleThread = new ClientQueryExampleThread(clId, tInv, 1);
-		session = clientQueryExampleThread.callClient(cLevel, condn);//unblock for deploy
+		if(ClientQueryExampleThread.session==null || ClientQueryExampleThread.session.isClosed())
+			ClientQueryExampleThread.session = ClientQueryExampleThread.callClient(cLevel, condn);//unblock for deploy
 		Query q = null;
 		//UUID idOne = UUID.randomUUID();
 		String CLID = null; //String.valueOf(idOne) + String.valueOf(System.currentTimeMillis());
@@ -225,8 +227,8 @@ public class Interface {
 		curr_deadline = curr_deadline - (System.currentTimeMillis()-tInv);
 		
 		System.out.println("***After executing the query index"+ index);
-		releaseLock(session,key,clId,index);//unblock for deploy
-		removeregistry(session,key,clId,index);//unblock for deploy
+		releaseLock(ClientQueryExampleThread.session,key,clId,index);//unblock for deploy
+		removeregistry(ClientQueryExampleThread.session,key,clId,index);//unblock for deploy
 		System.out.println("***After release lock and registry cleanup for the query index"+ index);
 	}
 	

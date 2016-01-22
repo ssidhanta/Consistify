@@ -47,7 +47,7 @@ public class CallClient {
 		int threadCnt = 16; 
 		long totalTime = System.currentTimeMillis();
 		//ClientQueryExampleThread.threadCnt =  threadCnt;
-		ClientQueryExampleThread.host = "172.31.36.142";
+		ClientQueryExampleThread.host = "172.31.47.76";
 		ClientQueryExampleThread.port = "9042";
 		if(args.length>0 && args[0]!=null)
 			threadCnt = Integer.parseInt(args[0].trim());

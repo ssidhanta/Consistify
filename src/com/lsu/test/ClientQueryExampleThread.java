@@ -24,6 +24,7 @@ import com.lsu.objects.Query;
 import com.lsu.objects.Tuple;
 import com.lsu.shim.DependencyChecker;
 import com.lsu.shim.Interface;
+import com.lsu.shim.InterfaceFixed;
 import com.lsu.shim.Verifier;
 
 import me.prettyprint.cassandra.model.BasicColumnDefinition;
@@ -39,7 +40,7 @@ import me.prettyprint.cassandra.service.ThriftKsDef;
  */
 
 public class ClientQueryExampleThread implements Runnable {
-	private static final int HIGHER_TIMEOUT = 100000;
+	private static final int HIGHER_TIMEOUT = 70000;
 	private static StringSerializer stringSerializer = StringSerializer.get();
 	private static LongSerializer longSerializer = LongSerializer.get();
 	private long tInv;
@@ -47,8 +48,8 @@ public class ClientQueryExampleThread implements Runnable {
 	public static int threadCnt;
 	private volatile boolean done = false;
 	public static Session session;
-	public static String host;
-	public static String port;
+	public static String host = "172.31.36.91";
+	public static String port = "9042";
 	public static Tuple tuple;
 	
 	public int getCounter() {
@@ -80,7 +81,7 @@ public class ClientQueryExampleThread implements Runnable {
 	}
 
 	private static Cluster cluster; 
-	public static int replicas = 3; 
+	public static int replicas = 1; 
 	
 	public  ClientQueryExampleThread(String CLIDparam, long tInvparam, int i){
 		this.CLID = CLIDparam;
@@ -111,11 +112,11 @@ public class ClientQueryExampleThread implements Runnable {
 					 .withPort(Integer.parseInt(ClientQueryExampleThread.port))
 					 .addContactPoint(ClientQueryExampleThread.host)
 					 .withPoolingOptions(poolingOptions).build();
-			 ClientQueryExampleThread.cluster.getConfiguration().getSocketOptions().setReadTimeoutMillis(HIGHER_TIMEOUT);
-			 ClientQueryExampleThread.cluster.getConfiguration().getSocketOptions().setConnectTimeoutMillis(HIGHER_TIMEOUT);
+			 //ClientQueryExampleThread.cluster.getConfiguration().getSocketOptions().setReadTimeoutMillis(HIGHER_TIMEOUT);
+			 //ClientQueryExampleThread.cluster.getConfiguration().getSocketOptions().setConnectTimeoutMillis(HIGHER_TIMEOUT);
 			Session session = ClientQueryExampleThread.cluster.connect();
 			//String kSpace = "CREATE KEYSPACE IF NOT EXISTS consistify WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy', 'eu-central' : 1, 'ap-northeast' : 1, 'us-west-2' : 1 }";
-			//String kSpace = "CREATE KEYSPACE IF NOT EXISTS consistify WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy', 'us-west-2' : 5 }";
+			String kSpace = "CREATE KEYSPACE IF NOT EXISTS consistify WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy', 'us-west-2' : 1 }";
 			//ClientQueryExampleThread.session.execute(kSpace);
 			//ClientQueryExampleThread.session.execute("CREATE COLUMNFAMILY IF NOT EXISTS consistify.orders (key text, first text, last text, middle text, number text, price text, PRIMARY KEY(key))");
 			//System.out.println("***Callclient  cluster session:="+session);

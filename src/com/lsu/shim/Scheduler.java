@@ -43,9 +43,9 @@ public class Scheduler {
 		{ 
 			r = rList.get(i);
 			//System.out.println("***min:="+ min  +"(r.getDEADLINE():="+r.getDEADLINE()+" r.getWAITINGTIME():="+r.getWAITINGTIME().trim()+" (r.getLATENCYDEP():="+r.getLATENCYDEP());
-			if(r!=null && min>(Long.parseLong(r.getDEADLINE().trim()) - (Long.parseLong(r.getCREATETIME().trim()) - (int)System.currentTimeMillis()) -Integer.parseInt(r.getWAITINGTIME().trim())-Long.parseLong(r.getLATENCYDEP().trim())))
+			if(r!=null && min>(Long.parseLong(r.getDEADLINE().replace("\"", "").trim()) - (Long.parseLong(r.getCREATETIME().replace("\"", "").trim()) - (int)System.currentTimeMillis()) -Long.parseLong(r.getWAITINGTIME().replace("\"", "").trim())-Long.parseLong(r.getLATENCYDEP().replace("\"", "").trim())))
 			{
-				min = Long.parseLong(r.getDEADLINE().trim())-Integer.parseInt(r.getWAITINGTIME().trim())-Long.parseLong(r.getLATENCYDEP().trim());
+				min = Long.parseLong(r.getDEADLINE().trim())-Long.parseLong(r.getWAITINGTIME().trim())-Long.parseLong(r.getLATENCYDEP().trim());
 				//System.out.println("**111*CLID:=="+r.getCLID()+" clId:="+r.getSTATUS());
 				tempRet = r.getCLID() + ":" + r.getSTATUS();
 			}	

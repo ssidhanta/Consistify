@@ -124,7 +124,7 @@ public class ClientQueryExampleThreadFixed implements Runnable {
 		return ClientQueryExampleThreadFixed.session;
 	 }
 	
-	 public void StockTrading(String cLevel, String CLID, long tInv, int currthreadCount){
+	 public void Retail(String cLevel, String CLID, long tInv, int currthreadCount){
 	    	//Strin56 "ALL",condn = "price>20", className = "C:\\Users\\ssidha1\\workspace\\Consistify\\src\\com\\lsu\\test\\ClientQueryExampleThread.java";//block for deploy
 		 String condn = "ORDER_ID>20", className = "/home/ubuntu/Consistify/src/com/lsu/test/ClientQueryExampleThreadFixed.java";//unblock for deploy
 			int index = 0;
@@ -135,19 +135,13 @@ public class ClientQueryExampleThreadFixed implements Runnable {
 			//this.counter = currthreadCount;
 			InterfaceFixed intrface = new InterfaceFixed();
 			ClientQueryExampleThreadFixed.session = intrface.callInterface(cLevel,condn, className,CLID, tInv,(int)currthreadCount);
-			intrface.insert("stock","stock","STOCK_ID","dsds123", "STOCK_NUM","123","STOCK_DESC","sedefe1213", "STOCK_PRICE", "123", "", "", "", index, System.currentTimeMillis(),InterfaceFixed.latency_insert,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
+			intrface.insert("consistify","orders","first", "John","last","Smith","middle", "Q", "number", "20", "price", "100", "",index, System.currentTimeMillis(),InterfaceFixed.latency_insert,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
 			index++;
-			intrface.insert("stock","orders","ORDER_ID","dsds123", "STOCK_ID","ffewwe2323","STOCK_NUM","123", "STOCK_PRICE", "123", "", "", "", index, System.currentTimeMillis(),InterfaceFixed.latency_insert,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
+			String price=intrface.read("consistify","orders","first", "jsmith",index, System.currentTimeMillis(),InterfaceFixed.latency_read,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
+			index++;  
+			intrface.update("consistify","orders","last","price","first", "jsmith", "" ,index, System.currentTimeMillis(),InterfaceFixed.latency_update, cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
 			index++;
-			intrface.insert("stock","investors","INVESTOR_ID","dsds123", "INVESTOR_NAME","ffewwe yfguygu","DEPOSIT","123", "CREATE_DATE", "02141984", "", "", "", index, System.currentTimeMillis(),InterfaceFixed.latency_insert,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
-			index++;
-			String price=intrface.read("stock","orders","ORDER_ID","sfwrfw3454342", index, System.currentTimeMillis(),InterfaceFixed.latency_read,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
-			index++;
-			String price1=intrface.read("stock","investors","INVESTOR_ID","sfwrfw3454342", index, System.currentTimeMillis(),InterfaceFixed.latency_read,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
-			index++;
-			intrface.update("stock","orders","CONFIRMATION","YES","ORDER_ID", "guui1555", "", index, System.currentTimeMillis(),InterfaceFixed.latency_update, cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
-			index++;
-			intrface.insert("stock","order_history","ORDER_ID","dsds123", "STOCK_ID","ffewwe2323","INVESTOR_ID","sfs323", "CREATE_DATE", "02141984", "", "", "", index, System.currentTimeMillis(),InterfaceFixed.latency_insert,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
+			String new_price=intrface.read("consistify","orders","first","jsmith", index, System.currentTimeMillis(),InterfaceFixed.latency_read,cLevel,CLID, tInv,ClientQueryExampleThreadFixed.session);
 			index++;
 			//String new_price=intrface.read("shopping_cart","orders","jsmith","price", index, System.currentTimeMillis(),Interface.latency_read,cLevel,CLID, tInv,tuple);
 			long totalTime = (System.currentTimeMillis() - tInv)/1000;
@@ -209,7 +203,7 @@ public class ClientQueryExampleThreadFixed implements Runnable {
 		// TODO Auto-generated method stub
     	long threadId = Thread.currentThread().getId();
     	//ShoppingCart(this.CLID, this.tInv,this.counter);
-    	StockTrading(ClientQueryExampleThreadFixed.cLevel, this.CLID, this.tInv,this.counter);
+    	Retail(ClientQueryExampleThreadFixed.cLevel, this.CLID, this.tInv,this.counter);
 	}
     
     /*public void stop() {

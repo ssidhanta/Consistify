@@ -399,7 +399,7 @@ public class InterfaceFixed {
 		
 	}*/
 
-	public Session callInterface(String cLevel, String condn, String className, String CLID, long tInv, int currthreadCount) {
+	public synchronized Session callInterface(String cLevel, String condn, String className, String CLID, long tInv, int currthreadCount) {
 		//Scheduler scheduler = new Scheduler();
 		//ClientQueryExampleThreadFixed clientQueryExampleThreadFixed = new ClientQueryExampleThreadFixed(CLID, tInv, currthreadCount);
 		// TODO Auto-generated method stub
